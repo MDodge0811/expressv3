@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const util = require('util');
+const _ = require('lodash');
+const { Console } = require('console');
 const port = 3001;
 
 const app = express();
@@ -25,8 +27,11 @@ const search = (query, json) => {
 		let check = true;
 		for (let key in query) {
 			check = false;
-			if (query[key] === object[key]) {
+			if (object[key].toLowerCase().includes(query[key].toLowerCase())) {
 				check = true;
+			}
+			if (!check) {
+				break;
 			}
 		}
 		if (!!check) {

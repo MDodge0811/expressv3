@@ -15,18 +15,19 @@ const App = () => {
 	useEffect(() => {
 		let url = `http://localhost:3001/?`;
 		if (query.firstAppearance !== '') {
-			url = url.concat(`first_appearance=${query.firstAppearance}`);
+			url = url.concat(`first_appearance=${query.firstAppearance}&`);
 		}
 		if (query.publisher !== '') {
-			url = url.concat(`publisher=${query.publisher}`);
+			url = url.concat(`publisher=${query.publisher}&`);
 		}
 		if (query.alterEgo !== '') {
-			url = url.concat(`alter_ego=${query.alterEgo}`);
+			url = url.concat(`alter_ego=${query.alterEgo}&`);
 		}
 		if (query.heroName !== '') {
-			url = url.concat(`superhero=${query.heroName}`);
+			url = url.concat(`superhero=${query.heroName}&`);
 		}
 		(async () => {
+			console.log(url);
 			const { data } = await axios.get(url);
 			setSuperHeroes(data);
 		})();

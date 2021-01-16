@@ -15,9 +15,9 @@ const Search = (props) => {
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 		const queryObject = {
-			heroName,
-			alterEgo,
-			firstAppearance,
+			heroName: heroName,
+			alterEgo: alterEgo,
+			firstAppearance: firstAppearance,
 			publisher,
 		};
 
@@ -26,19 +26,15 @@ const Search = (props) => {
 
 	const handleChange = (placeholder, text) => {
 		if (placeholder === HERONAME) {
-			console.log(`Name`);
 			setHeroName(text);
 		}
 		if (placeholder === ALTEREGO) {
-			console.log(`alter`);
 			setAlterEgo(text);
 		}
 		if (placeholder === FIRSTAPPEARANCE) {
-			console.log(`appear`);
 			setFirstAppearance(text);
 		}
 		if (placeholder === PUBLISHER) {
-			console.log(`pub`);
 			setPublisher(text);
 		}
 	};
@@ -66,6 +62,12 @@ const Search = (props) => {
 			<p>
 				<label>Publisher</label>
 				<select id="publisher-list">
+					<option
+						value=""
+						onClick={(e) => handleChange(PUBLISHER, e.target.value)}
+					>
+						Deselect
+					</option>
 					<option
 						value="Marvel Comics"
 						onClick={(e) => handleChange(PUBLISHER, e.target.value)}
