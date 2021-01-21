@@ -2,8 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const util = require('util');
-const _ = require('lodash');
-const { Console } = require('console');
+
 const port = 3001;
 
 const app = express();
@@ -12,9 +11,9 @@ app.use(cors());
 
 const readFile = util.promisify(fs.readFile);
 
-const getData = async (filename) => {
+const getJson = async (filename, charset = 'utf8') => {
 	try {
-		const data = await readFile(filename, 'utf8');
+		const data = await readFile(filename, charset);
 		const parsedData = JSON.parse(data);
 		return parsedData;
 	} catch {
@@ -24,27 +23,27 @@ const getData = async (filename) => {
 
 const search = (query, json) => {
 	const results = json.filter((object) => {
-		let check = true;
-		for (let key in query) {
-			check = false;
-			if (object[key].toLowerCase().includes(query[key].toLowerCase())) {
-				check = true;
+		for (let key in object) {
+			if (object[key].toLowerCase().includes(query.keyword.toLowerCase())) {
+				return object;
 			}
-			if (!check) {
-				break;
-			}
-		}
-		if (!!check) {
-			return object;
 		}
 	});
 	return results;
 };
 
 app.get('/', async (req, res) => {
-	const data = await getData('./superheroes.json');
-	const results = search(req.query, data);
-	res.send(results);
+	try {
+		const data = await getJson('./superheroes.json');
+		if (req.query.keyword) {
+			const results = search(req.query, data);
+			res.send(results);
+		} else {
+			res.send(data);
+		}
+	} catch {
+		res.sendStatus(404);
+	}
 });
 
 app.listen(3001, () => console.log(`Listening on ${port}`));
